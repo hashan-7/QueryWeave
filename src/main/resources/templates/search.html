@@ -1,0 +1,1624 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Synapse Search</title>-->
+<!--    &lt;!&ndash; Font Awesome CDN for Icons &ndash;&gt;-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">-->
+<!--    <style>-->
+<!--        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');-->
+
+<!--        :root {-->
+<!--            &#45;&#45;background-color: #0d1117;-->
+<!--            &#45;&#45;container-bg: #161b22;-->
+<!--            &#45;&#45;primary-color: #58a6ff;-->
+<!--            &#45;&#45;text-color: #c9d1d9;-->
+<!--            &#45;&#45;heading-color: #ffffff;-->
+<!--            &#45;&#45;border-color: #30363d;-->
+<!--            &#45;&#45;danger-color: #d73a49;-->
+<!--            &#45;&#45;success-color: #2da44e;-->
+<!--            &#45;&#45;shadow-color: rgba(88, 166, 255, 0.2);-->
+<!--            &#45;&#45;glow-color: rgba(88, 166, 255, 0.1);-->
+<!--        }-->
+
+<!--        * {-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            font-family: 'Inter', sans-serif;-->
+<!--            background-color: var(&#45;&#45;background-color);-->
+<!--            color: var(&#45;&#45;text-color);-->
+<!--            min-height: 100vh;-->
+<!--            position: relative;-->
+<!--        }-->
+
+<!--        .background-shapes {-->
+<!--            position: fixed;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            z-index: -1;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .shape {-->
+<!--            position: absolute;-->
+<!--            border-radius: 50%;-->
+<!--            background: linear-gradient(45deg, var(&#45;&#45;primary-color), #a371f7);-->
+<!--            opacity: 0.1;-->
+<!--            animation: float 20s infinite ease-in-out alternate;-->
+<!--        }-->
+
+<!--        .shape1 { width: 400px; height: 400px; top: -150px; left: -150px; animation-duration: 25s; }-->
+<!--        .shape2 { width: 300px; height: 300px; bottom: -100px; right: -100px; animation-duration: 30s; }-->
+<!--        .shape3 { width: 200px; height: 200px; top: 50%; left: 40%; animation-duration: 18s; }-->
+
+<!--        @keyframes float {-->
+<!--            0% { transform: translateY(0px) translateX(0px) rotate(0deg); }-->
+<!--            100% { transform: translateY(40px) translateX(-30px) rotate(180deg); }-->
+<!--        }-->
+
+<!--        .navbar-custom {-->
+<!--            position: fixed;-->
+<!--            top: 20px;-->
+<!--            left: 50%;-->
+<!--            transform: translateX(-50%);-->
+<!--            width: fit-content;-->
+<!--            background-color: rgba(22, 27, 34, 0.7);-->
+<!--            backdrop-filter: blur(10px);-->
+<!--            border-radius: 45px;-->
+<!--            padding: 8px;-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            z-index: 1000;-->
+<!--            border: 1px solid var(&#45;&#45;border-color);-->
+<!--            animation: fadeInDown 0.8s ease-out;-->
+<!--        }-->
+
+<!--        .navbar-custom a {-->
+<!--            color: var(&#45;&#45;text-color);-->
+<!--            padding: 10px 20px;-->
+<!--            text-decoration: none;-->
+<!--            border-radius: 40px;-->
+<!--            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;-->
+<!--            margin: 0 5px;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            font-size: 1rem;-->
+<!--            font-weight: 500;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+
+<!--        .navbar-custom a i {-->
+<!--            margin-right: 8px;-->
+<!--            width: 16px;-->
+<!--        }-->
+
+<!--        .navbar-custom a:hover,-->
+<!--        .navbar-custom a.active {-->
+<!--            background-color: var(&#45;&#45;primary-color);-->
+<!--            color: var(&#45;&#45;background-color);-->
+<!--        }-->
+
+<!--        .search-container {-->
+<!--            max-width: 800px;-->
+<!--            margin: 0 auto;-->
+<!--            padding: 120px 2rem 4rem 2rem;-->
+<!--            text-align: center;-->
+<!--            animation: fadeInUp 1s ease-out;-->
+<!--        }-->
+
+<!--        .search-title {-->
+<!--            font-size: 2.5rem;-->
+<!--            color: var(&#45;&#45;heading-color);-->
+<!--            margin-bottom: 1rem;-->
+<!--        }-->
+
+<!--        .search-subtitle {-->
+<!--            font-size: 1.1rem;-->
+<!--            margin-bottom: 2.5rem;-->
+<!--        }-->
+
+<!--        .search-form-wrapper {-->
+<!--            position: relative;-->
+<!--        }-->
+
+<!--        .search-form {-->
+<!--            display: flex;-->
+<!--            box-shadow: 0 10px 30px rgba(0,0,0,0.2);-->
+<!--            border-radius: 25px;-->
+<!--            overflow: hidden;-->
+<!--            position: relative;-->
+<!--            z-index: 100;-->
+<!--        }-->
+
+<!--        .search-input {-->
+<!--            flex-grow: 1;-->
+<!--            border: 1px solid var(&#45;&#45;border-color);-->
+<!--            background-color: var(&#45;&#45;container-bg);-->
+<!--            padding: 1rem;-->
+<!--            font-size: 1rem;-->
+<!--            color: var(&#45;&#45;text-color);-->
+<!--            border-radius: 25px 0 0 25px;-->
+<!--            outline: none;-->
+<!--            transition: border-color 0.3s, box-shadow 0.3s;-->
+<!--            border-right: none;-->
+<!--        }-->
+
+<!--        .search-input:focus {-->
+<!--            border-color: var(&#45;&#45;primary-color);-->
+<!--            box-shadow: 0 0 0 4px var(&#45;&#45;glow-color);-->
+<!--        }-->
+
+<!--        .search-button {-->
+<!--            background-color: var(&#45;&#45;primary-color);-->
+<!--            color: var(&#45;&#45;background-color);-->
+<!--            border: none;-->
+<!--            padding: 1rem 1.5rem;-->
+<!--            border-radius: 0 25px 25px 0;-->
+<!--            font-size: 1rem;-->
+<!--            font-weight: 600;-->
+<!--            cursor: pointer;-->
+<!--            transition: background-color 0.3s;-->
+<!--        }-->
+
+<!--        .search-button:hover {-->
+<!--            background-color: #79c0ff;-->
+<!--        }-->
+
+<!--        .suggestions-container {-->
+<!--            position: absolute;-->
+<!--            top: 100%;-->
+<!--            left: 0;-->
+<!--            right: 0;-->
+<!--            background-color: var(&#45;&#45;container-bg);-->
+<!--            border: 1px solid var(&#45;&#45;border-color);-->
+<!--            border-top: none;-->
+<!--            border-radius: 0 0 12px 12px;-->
+<!--            overflow: hidden;-->
+<!--            z-index: 99;-->
+<!--            text-align: left;-->
+<!--            max-height: 300px;-->
+<!--            overflow-y: auto;-->
+<!--            display: none;-->
+<!--        }-->
+
+<!--        .suggestion-item {-->
+<!--            padding: 0.75rem 1rem;-->
+<!--            cursor: pointer;-->
+<!--            transition: background-color 0.2s;-->
+<!--        }-->
+
+<!--        .suggestion-item:hover, .suggestion-item.active {-->
+<!--            background-color: var(&#45;&#45;primary-color);-->
+<!--            color: var(&#45;&#45;background-color);-->
+<!--        }-->
+
+<!--        .results-container {-->
+<!--            margin-top: 3rem;-->
+<!--            text-align: left;-->
+<!--            display: none;-->
+<!--            animation: fadeInUp 0.8s ease-out;-->
+<!--        }-->
+
+<!--        .result-box {-->
+<!--            background-color: var(&#45;&#45;container-bg);-->
+<!--            border: 1px solid var(&#45;&#45;border-color);-->
+<!--            border-radius: 12px;-->
+<!--            padding: 1.5rem;-->
+<!--            margin-bottom: 1.5rem;-->
+<!--        }-->
+
+<!--        .result-header {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 12px;-->
+<!--            margin-bottom: 1rem;-->
+<!--            font-size: 1.1rem;-->
+<!--            font-weight: 600;-->
+<!--            color: var(&#45;&#45;heading-color);-->
+<!--        }-->
+
+<!--        .result-header .ai-icon {-->
+<!--            width: 32px;-->
+<!--            height: 32px;-->
+<!--            border-radius: 50%;-->
+<!--            background-color: var(&#45;&#45;primary-color);-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            color: var(&#45;&#45;background-color);-->
+<!--        }-->
+
+<!--        .result-actions {-->
+<!--            margin-left: auto;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 0.5rem;-->
+<!--        }-->
+
+<!--        .action-icon {-->
+<!--            color: #8b949e;-->
+<!--            background: none;-->
+<!--            border: 1px solid transparent;-->
+<!--            border-radius: 50%;-->
+<!--            width: 36px;-->
+<!--            height: 36px;-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            cursor: pointer;-->
+<!--            transition: color 0.3s, background-color 0.3s;-->
+<!--        }-->
+
+<!--        .action-icon:hover {-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            background-color: rgba(88, 166, 255, 0.1);-->
+<!--        }-->
+
+<!--        .language-select {-->
+<!--            background-color: var(&#45;&#45;container-bg);-->
+<!--            color: var(&#45;&#45;text-color);-->
+<!--            border: 1px solid var(&#45;&#45;border-color);-->
+<!--            border-radius: 6px;-->
+<!--            padding: 4px 8px;-->
+<!--            font-family: inherit;-->
+<!--        }-->
+
+<!--        .result-content {-->
+<!--            line-height: 1.7;-->
+<!--            white-space: pre-wrap;-->
+<!--        }-->
+
+<!--        .sources-list {-->
+<!--            list-style: none;-->
+<!--            padding-left: 0;-->
+<!--        }-->
+
+<!--        .sources-list li {-->
+<!--            margin-bottom: 0.5rem;-->
+<!--        }-->
+
+<!--        .sources-list a {-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            text-decoration: none;-->
+<!--            font-size: 0.9rem;-->
+<!--        }-->
+
+<!--        .follow-up-container {-->
+<!--            display: flex;-->
+<!--            flex-wrap: wrap;-->
+<!--            gap: 0.75rem;-->
+<!--        }-->
+
+<!--        .follow-up-btn {-->
+<!--            background-color: transparent;-->
+<!--            border: 1px solid var(&#45;&#45;border-color);-->
+<!--            color: var(&#45;&#45;text-color);-->
+<!--            padding: 0.5rem 1rem;-->
+<!--            border-radius: 25px;-->
+<!--            cursor: pointer;-->
+<!--            transition: all 0.3s;-->
+<!--        }-->
+
+<!--        .follow-up-btn:hover {-->
+<!--            background-color: var(&#45;&#45;primary-color);-->
+<!--            color: var(&#45;&#45;background-color);-->
+<!--            border-color: var(&#45;&#45;primary-color);-->
+<!--        }-->
+
+<!--        .loader {-->
+<!--            border: 4px solid #f3f3f3;-->
+<!--            border-top: 4px solid var(&#45;&#45;primary-color);-->
+<!--            border-radius: 50%;-->
+<!--            width: 40px;-->
+<!--            height: 40px;-->
+<!--            animation: spin 1s linear infinite;-->
+<!--            margin: 2rem auto;-->
+<!--            display: none;-->
+<!--        }-->
+
+<!--        .modal-backdrop {-->
+<!--            position: fixed;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            background: rgba(0, 0, 0, 0.6);-->
+<!--            backdrop-filter: blur(5px);-->
+<!--            z-index: 2000;-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            opacity: 0;-->
+<!--            visibility: hidden;-->
+<!--            transition: opacity 0.3s ease, visibility 0.3s ease;-->
+<!--        }-->
+
+<!--        .modal-backdrop.visible {-->
+<!--            opacity: 1;-->
+<!--            visibility: visible;-->
+<!--        }-->
+
+<!--        .modal-content {-->
+<!--            background-color: var(&#45;&#45;container-bg);-->
+<!--            padding: 30px;-->
+<!--            border-radius: 16px;-->
+<!--            border: 1px solid var(&#45;&#45;border-color);-->
+<!--            width: 90%;-->
+<!--            max-width: 400px;-->
+<!--            text-align: center;-->
+<!--            transform: scale(0.95);-->
+<!--            transition: transform 0.3s ease;-->
+<!--        }-->
+
+<!--        .modal-backdrop.visible .modal-content {-->
+<!--            transform: scale(1);-->
+<!--        }-->
+
+<!--        .modal-title {-->
+<!--            font-size: 1.5rem;-->
+<!--            color: var(&#45;&#45;heading-color);-->
+<!--            margin-bottom: 1rem;-->
+<!--        }-->
+
+<!--        .modal-text {-->
+<!--            margin-bottom: 2rem;-->
+<!--        }-->
+
+<!--        .modal-actions {-->
+<!--            display: flex;-->
+<!--            gap: 1rem;-->
+<!--        }-->
+
+<!--        .modal-button {-->
+<!--            flex: 1;-->
+<!--            padding: 10px 20px;-->
+<!--            border-radius: 25px;-->
+<!--            font-size: 1rem;-->
+<!--            font-weight: 600;-->
+<!--            cursor: pointer;-->
+<!--            border: none;-->
+<!--            transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        .modal-button-cancel {-->
+<!--            background-color: #30363d;-->
+<!--            color: #fff;-->
+<!--        }-->
+<!--        .modal-button-cancel:hover {-->
+<!--            background-color: #484f58;-->
+<!--        }-->
+
+<!--        .modal-button-confirm {-->
+<!--            background-color: var(&#45;&#45;danger-color);-->
+<!--            color: #fff;-->
+<!--        }-->
+<!--        .modal-button-confirm:hover {-->
+<!--            background-color: var(&#45;&#45;danger-hover-color);-->
+<!--        }-->
+
+<!--        .toast-notification {-->
+<!--            position: fixed;-->
+<!--            bottom: 20px;-->
+<!--            left: 50%;-->
+<!--            transform: translateX(-50%);-->
+<!--            background-color: var(&#45;&#45;success-color);-->
+<!--            color: #fff;-->
+<!--            padding: 10px 20px;-->
+<!--            border-radius: 25px;-->
+<!--            z-index: 3000;-->
+<!--            opacity: 0;-->
+<!--            visibility: hidden;-->
+<!--            transition: opacity 0.3s ease, transform 0.3s ease;-->
+<!--            transform: translateY(20px) translateX(-50%);-->
+<!--        }-->
+<!--        .toast-notification.show {-->
+<!--            opacity: 1;-->
+<!--            visibility: visible;-->
+<!--            transform: translateY(0) translateX(-50%);-->
+<!--        }-->
+
+<!--        @keyframes spin {-->
+<!--            0% { transform: rotate(0deg); }-->
+<!--            100% { transform: rotate(360deg); }-->
+<!--        }-->
+
+<!--        @keyframes fadeInDown {-->
+<!--            from { opacity: 0; transform: translateY(-20px) translateX(-50%); }-->
+<!--            to { opacity: 1; transform: translateY(0) translateX(-50%); }-->
+<!--        }-->
+
+<!--        @keyframes fadeInUp {-->
+<!--            from { opacity: 0; transform: translateY(20px); }-->
+<!--            to { opacity: 1; transform: translateY(0); }-->
+<!--        }-->
+
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="background-shapes">-->
+<!--    <div class="shape shape1"></div>-->
+<!--    <div class="shape shape2"></div>-->
+<!--    <div class="shape shape3"></div>-->
+<!--</div>-->
+
+<!--<div class="toast-notification" id="copyToast">Copied to clipboard!</div>-->
+
+<!--<div class="modal-backdrop" id="confirmationModal">-->
+<!--    <div class="modal-content">-->
+<!--        <h2 class="modal-title" id="modalTitle">Are you sure?</h2>-->
+<!--        <p class="modal-text" id="modalText">This action cannot be undone.</p>-->
+<!--        <div class="modal-actions">-->
+<!--            <button class="modal-button modal-button-cancel" id="modalCancelBtn">Cancel</button>-->
+<!--            <button class="modal-button modal-button-confirm" id="modalConfirmBtn">Confirm</button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<nav class="navbar-custom">-->
+<!--    <a href="/search" class="active"><i class="fa-solid fa-magnifying-glass"></i>Search</a>-->
+<!--    <a href="/history"><i class="fa-solid fa-clock-rotate-left"></i>History</a>-->
+<!--    <a href="/profile"><i class="fa-solid fa-user"></i>Profile</a>-->
+<!--    <a id="logoutLink" href="#"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>-->
+<!--</nav>-->
+
+<!--<main class="search-container">-->
+<!--    <h1 class="search-title" th:text="'Welcome, ' + ${userName} + '!'">Welcome, User!</h1>-->
+<!--    <p class="search-subtitle">Get intelligent, summarized answers from across the web. What would you like to know?</p>-->
+
+<!--    <div class="search-form-wrapper">-->
+<!--        <form class="search-form" id="searchForm">-->
+<!--            <input type="text" id="searchInput" class="search-input" placeholder="e.g., What is the future of renewable energy?" required autocomplete="off"/>-->
+<!--            <button type="submit" class="search-button">Search</button>-->
+<!--        </form>-->
+<!--        <div class="suggestions-container" id="suggestionsContainer"></div>-->
+<!--    </div>-->
+
+<!--    <div class="loader" id="loader"></div>-->
+
+<!--    <div class="results-container" id="resultsContainer">-->
+<!--        <div class="result-box" id="aiAnswerBox">-->
+<!--            <div class="result-header">-->
+<!--                <div class="ai-icon">-->
+<!--                    <i class="fa-solid fa-robot"></i>-->
+<!--                </div>-->
+<!--                <span>Synapse AI</span>-->
+<!--                <div class="result-actions">-->
+<!--                    <select id="languageSelect" class="language-select">-->
+<!--                        <option value="English">English</option>-->
+<!--                        <option value="Sinhala">Sinhala</option>-->
+<!--                        <option value="Tamil">Tamil</option>-->
+<!--                    </select>-->
+<!--                    <button class="action-icon" id="translateBtn" title="Translate summary">-->
+<!--                        <i class="fa-solid fa-language"></i>-->
+<!--                    </button>-->
+<!--                    <button class="action-icon" id="copyBtn" title="Copy summary">-->
+<!--                        <i class="fa-solid fa-copy"></i>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <p class="result-content" id="aiAnswerContent"></p>-->
+<!--        </div>-->
+
+<!--        <div class="result-box" id="sourcesContainer">-->
+<!--            <h3>Sources Used</h3>-->
+<!--            <ul class="sources-list" id="sourcesList"></ul>-->
+<!--        </div>-->
+
+<!--        <div class="result-box" id="followUpContainer">-->
+<!--            <h3>Related Questions</h3>-->
+<!--            <div class="follow-up-container" id="followUpList"></div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</main>-->
+
+<!--<script>-->
+<!--    const searchForm = document.getElementById('searchForm');-->
+<!--    const searchInput = document.getElementById('searchInput');-->
+<!--    const loader = document.getElementById('loader');-->
+<!--    const resultsContainer = document.getElementById('resultsContainer');-->
+<!--    const aiAnswerContent = document.getElementById('aiAnswerContent');-->
+<!--    const sourcesContainer = document.getElementById('sourcesContainer');-->
+<!--    const sourcesList = document.getElementById('sourcesList');-->
+<!--    const followUpContainer = document.getElementById('followUpContainer');-->
+<!--    const followUpList = document.getElementById('followUpList');-->
+<!--    const copyToast = document.getElementById('copyToast');-->
+
+<!--    function performSearch(query) {-->
+<!--        if (!query) return;-->
+
+<!--        suggestionsContainer.style.display = 'none';-->
+<!--        resultsContainer.style.display = 'none';-->
+<!--        loader.style.display = 'block';-->
+
+<!--        fetch('/api/search', {-->
+<!--            method: 'POST',-->
+<!--            headers: { 'Content-Type': 'application/json' },-->
+<!--            body: JSON.stringify({ query: query }),-->
+<!--        })-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                loader.style.display = 'none';-->
+<!--                resultsContainer.style.display = 'block';-->
+<!--                aiAnswerContent.textContent = data.summary;-->
+
+<!--                displaySources(data.sources);-->
+<!--                displayFollowUpQuestions(data.followUpQuestions);-->
+<!--            })-->
+<!--            .catch((error) => {-->
+<!--                console.error('Error:', error);-->
+<!--                loader.style.display = 'none';-->
+<!--                resultsContainer.style.display = 'block';-->
+<!--                aiAnswerContent.textContent = 'Sorry, an error occurred while fetching the summary. Please try again.';-->
+<!--            });-->
+<!--    }-->
+
+<!--    function displaySources(sources) {-->
+<!--        sourcesList.innerHTML = '';-->
+<!--        if (sources && sources.length > 0) {-->
+<!--            sources.forEach(source => {-->
+<!--                const li = document.createElement('li');-->
+<!--                const a = document.createElement('a');-->
+<!--                a.href = source;-->
+<!--                a.textContent = source;-->
+<!--                a.target = '_blank';-->
+<!--                li.appendChild(a);-->
+<!--                sourcesList.appendChild(li);-->
+<!--            });-->
+<!--            sourcesContainer.style.display = 'block';-->
+<!--        } else {-->
+<!--            sourcesContainer.style.display = 'none';-->
+<!--        }-->
+<!--    }-->
+
+<!--    function displayFollowUpQuestions(questions) {-->
+<!--        followUpList.innerHTML = '';-->
+<!--        if (questions && questions.length > 0) {-->
+<!--            questions.forEach(question => {-->
+<!--                const button = document.createElement('button');-->
+<!--                button.className = 'follow-up-btn';-->
+<!--                button.textContent = question;-->
+<!--                button.onclick = () => {-->
+<!--                    searchInput.value = question;-->
+<!--                    performSearch(question);-->
+<!--                };-->
+<!--                followUpList.appendChild(button);-->
+<!--            });-->
+<!--            followUpContainer.style.display = 'block';-->
+<!--        } else {-->
+<!--            followUpContainer.style.display = 'none';-->
+<!--        }-->
+<!--    }-->
+
+<!--    searchForm.addEventListener('submit', function(event) {-->
+<!--        event.preventDefault();-->
+<!--        performSearch(searchInput.value);-->
+<!--    });-->
+
+<!--    const suggestionsContainer = document.getElementById('suggestionsContainer');-->
+<!--    let suggestionTimeout;-->
+<!--    let activeSuggestionIndex = -1;-->
+
+<!--    searchInput.addEventListener('input', () => {-->
+<!--        clearTimeout(suggestionTimeout);-->
+<!--        suggestionTimeout = setTimeout(() => {-->
+<!--            const query = searchInput.value;-->
+<!--            if (query.length > 1) {-->
+<!--                fetch(`/api/suggestions?q=${encodeURIComponent(query)}`)-->
+<!--                    .then(response => response.json())-->
+<!--                    .then(suggestions => displaySuggestions(suggestions));-->
+<!--            } else {-->
+<!--                suggestionsContainer.style.display = 'none';-->
+<!--            }-->
+<!--        }, 300);-->
+<!--    });-->
+
+<!--    function displaySuggestions(suggestions) {-->
+<!--        suggestionsContainer.innerHTML = '';-->
+<!--        if (suggestions.length === 0) {-->
+<!--            suggestionsContainer.style.display = 'none';-->
+<!--            return;-->
+<!--        }-->
+
+<!--        suggestions.forEach(suggestion => {-->
+<!--            const item = document.createElement('div');-->
+<!--            item.className = 'suggestion-item';-->
+<!--            item.textContent = suggestion;-->
+<!--            item.addEventListener('click', () => {-->
+<!--                searchInput.value = suggestion;-->
+<!--                suggestionsContainer.style.display = 'none';-->
+<!--                performSearch(suggestion);-->
+<!--            });-->
+<!--            suggestionsContainer.appendChild(item);-->
+<!--        });-->
+<!--        suggestionsContainer.style.display = 'block';-->
+<!--        activeSuggestionIndex = -1;-->
+<!--    }-->
+
+<!--    searchInput.addEventListener('keydown', (e) => {-->
+<!--        const items = suggestionsContainer.querySelectorAll('.suggestion-item');-->
+<!--        if (items.length === 0) return;-->
+
+<!--        if (e.key === 'ArrowDown') {-->
+<!--            e.preventDefault();-->
+<!--            activeSuggestionIndex = (activeSuggestionIndex + 1) % items.length;-->
+<!--            updateActiveSuggestion(items);-->
+<!--        } else if (e.key === 'ArrowUp') {-->
+<!--            e.preventDefault();-->
+<!--            activeSuggestionIndex = (activeSuggestionIndex - 1 + items.length) % items.length;-->
+<!--            updateActiveSuggestion(items);-->
+<!--        } else if (e.key === 'Enter' && activeSuggestionIndex > -1) {-->
+<!--            e.preventDefault();-->
+<!--            items[activeSuggestionIndex].click();-->
+<!--        }-->
+<!--    });-->
+
+<!--    function updateActiveSuggestion(items) {-->
+<!--        items.forEach(item => item.classList.remove('active'));-->
+<!--        if (activeSuggestionIndex > -1) {-->
+<!--            items[activeSuggestionIndex].classList.add('active');-->
+<!--            searchInput.value = items[activeSuggestionIndex].textContent;-->
+<!--        }-->
+<!--    }-->
+
+<!--    document.addEventListener('click', (e) => {-->
+<!--        if (!searchForm.contains(e.target)) {-->
+<!--            suggestionsContainer.style.display = 'none';-->
+<!--        }-->
+<!--    });-->
+
+<!--    function showToast() {-->
+<!--        copyToast.classList.add('show');-->
+<!--        setTimeout(() => {-->
+<!--            copyToast.classList.remove('show');-->
+<!--        }, 2000);-->
+<!--    }-->
+
+<!--    const copyBtn = document.getElementById('copyBtn');-->
+<!--    copyBtn.addEventListener('click', () => {-->
+<!--        const textToCopy = document.getElementById('aiAnswerContent').textContent;-->
+<!--        navigator.clipboard.writeText(textToCopy).then(() => {-->
+<!--            showToast();-->
+<!--        });-->
+<!--    });-->
+
+<!--    const translateBtn = document.getElementById('translateBtn');-->
+<!--    const languageSelect = document.getElementById('languageSelect');-->
+<!--    translateBtn.addEventListener('click', () => {-->
+<!--        const textToTranslate = aiAnswerContent.textContent;-->
+<!--        const targetLanguage = languageSelect.value;-->
+
+<!--        translateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; // Show loader-->
+
+<!--        fetch('/api/translate', {-->
+<!--            method: 'POST',-->
+<!--            headers: { 'Content-Type': 'application/json' },-->
+<!--            body: JSON.stringify({ text: textToTranslate, targetLanguage: targetLanguage })-->
+<!--        })-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                aiAnswerContent.textContent = data.translatedText;-->
+<!--                translateBtn.innerHTML = '<i class="fa-solid fa-language"></i>'; // Restore icon-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error('Translate error:', error);-->
+<!--                translateBtn.innerHTML = '<i class="fa-solid fa-language"></i>'; // Restore icon on error-->
+<!--            });-->
+<!--    });-->
+
+<!--    const modal = document.getElementById('confirmationModal');-->
+<!--    const modalTitle = document.getElementById('modalTitle');-->
+<!--    const modalText = document.getElementById('modalText');-->
+<!--    const modalConfirmBtn = document.getElementById('modalConfirmBtn');-->
+<!--    const modalCancelBtn = document.getElementById('modalCancelBtn');-->
+<!--    const logoutLink = document.getElementById('logoutLink');-->
+
+<!--    let confirmAction = () => {};-->
+
+<!--    function showModal(title, text, confirmBtnText, action) {-->
+<!--        modalTitle.textContent = title;-->
+<!--        modalText.textContent = text;-->
+<!--        modalConfirmBtn.textContent = confirmBtnText;-->
+<!--        confirmAction = action;-->
+<!--        modal.classList.add('visible');-->
+<!--    }-->
+
+<!--    function hideModal() {-->
+<!--        modal.classList.remove('visible');-->
+<!--    }-->
+
+<!--    logoutLink.addEventListener('click', (e) => {-->
+<!--        e.preventDefault();-->
+<!--        showModal(-->
+<!--            'Confirm Logout',-->
+<!--            'Are you sure you want to log out of your session?',-->
+<!--            'Logout',-->
+<!--            () => {-->
+<!--                fetch('/logout', {-->
+<!--                    method: 'POST'-->
+<!--                }).then(response => {-->
+<!--                    if (response.ok) {-->
+<!--                        window.location.href = '/';-->
+<!--                    }-->
+<!--                }).catch(error => console.error('Logout error:', error));-->
+<!--            }-->
+<!--        );-->
+<!--    });-->
+
+<!--    modalCancelBtn.addEventListener('click', hideModal);-->
+<!--    modalConfirmBtn.addEventListener('click', () => {-->
+<!--        confirmAction();-->
+<!--    });-->
+<!--    modal.addEventListener('click', (e) => {-->
+<!--        if (e.target === modal) {-->
+<!--            hideModal();-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QueryWeave</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        :root {
+            --background-color: #0d1117;
+            --container-bg: #161b22;
+            --primary-color: #58a6ff;
+            --text-color: #c9d1d9;
+            --heading-color: #ffffff;
+            --border-color: #30363d;
+            --danger-color: #d73a49;
+            --success-color: #2da44e;
+            --shadow-color: rgba(88, 166, 255, 0.2);
+            --glow-color: rgba(88, 166, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .background-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), #a371f7);
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+
+        .shape1 { width: 400px; height: 400px; top: -150px; left: -150px; animation-duration: 25s; }
+        .shape2 { width: 300px; height: 300px; bottom: -100px; right: -100px; animation-duration: 30s; }
+        .shape3 { width: 200px; height: 200px; top: 50%; left: 40%; animation-duration: 18s; }
+
+        @keyframes float {
+            0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+            100% { transform: translateY(40px) translateX(-30px) rotate(180deg); }
+        }
+
+        .navbar-custom {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: fit-content;
+            background-color: rgba(22, 27, 34, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 45px;
+            padding: 8px;
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+            border: 1px solid var(--border-color);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .navbar-custom a {
+            color: var(--text-color);
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 40px;
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+            margin: 0 5px;
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .navbar-custom a i {
+            margin-right: 8px;
+            width: 16px;
+        }
+
+        .navbar-custom a:hover,
+        .navbar-custom a.active {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+        }
+
+        .search-container {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 120px 2rem 4rem 2rem;
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .search-title {
+            font-size: 2.5rem;
+            color: var(--heading-color);
+            margin-bottom: 1rem;
+        }
+
+        .search-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .search-form-wrapper {
+            position: relative;
+        }
+
+        .search-form {
+            display: flex;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 25px;
+            overflow: hidden;
+            position: relative;
+            z-index: 100;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            border: 1px solid var(--border-color);
+            background-color: var(--container-bg);
+            padding: 1rem;
+            font-size: 1rem;
+            color: var(--text-color);
+            border-radius: 25px 0 0 25px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            border-right: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px var(--glow-color);
+        }
+
+        .search-button {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 0 25px 25px 0;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-button:hover {
+            background-color: #79c0ff;
+        }
+
+        .suggestions-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: var(--container-bg);
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            overflow: hidden;
+            z-index: 99;
+            text-align: left;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .suggestion-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .suggestion-item:hover,
+        .suggestion-item.active {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+        }
+
+        .results-container {
+            margin-top: 3rem;
+            text-align: left;
+            display: none;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .result-box {
+            background-color: var(--container-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--heading-color);
+        }
+
+        .result-header .ai-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--background-color);
+        }
+
+        .result-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-icon {
+            color: #8b949e;
+            background: none;
+            border: 1px solid transparent;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: color 0.3s, background-color 0.3s;
+        }
+
+        .action-icon:hover {
+            color: var(--primary-color);
+            background-color: rgba(88, 166, 255, 0.1);
+        }
+
+        .result-content {
+            line-height: 1.85;
+            white-space: pre-wrap;
+            font-size: 1rem;
+        }
+
+        .key-points-list {
+            list-style: none;
+            padding-left: 0;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .key-points-list li {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            background: rgba(88, 166, 255, 0.04);
+        }
+
+        .sources-list {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .sources-list li {
+            margin: 0;
+        }
+
+        .source-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.92rem;
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            padding: 0.7rem 0.95rem;
+            transition: all 0.25s ease;
+            background: rgba(88, 166, 255, 0.04);
+        }
+
+        .source-link:hover {
+            background: rgba(88, 166, 255, 0.12);
+            border-color: var(--primary-color);
+        }
+
+        .follow-up-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .follow-up-btn {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .follow-up-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            border-color: var(--primary-color);
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+            display: none;
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-backdrop.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--container-bg);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-backdrop.visible .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-bottom: 1rem;
+        }
+
+        .modal-text {
+            margin-bottom: 2rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .modal-button {
+            flex: 1;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .modal-button-cancel {
+            background-color: #30363d;
+            color: #fff;
+        }
+
+        .modal-button-cancel:hover {
+            background-color: #484f58;
+        }
+
+        .modal-button-confirm {
+            background-color: var(--danger-color);
+            color: #fff;
+        }
+
+        .modal-button-confirm:hover {
+            background-color: #b62331;
+        }
+
+        .toast-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--success-color);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(20px) translateX(-50%);
+        }
+
+        .toast-notification.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) translateX(-50%);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px) translateX(-50%); }
+            to { opacity: 1; transform: translateY(0) translateX(-50%); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="background-shapes">
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
+</div>
+
+<div class="toast-notification" id="copyToast">Copied to clipboard!</div>
+
+<div class="modal-backdrop" id="confirmationModal">
+    <div class="modal-content">
+        <h2 class="modal-title" id="modalTitle">Are you sure?</h2>
+        <p class="modal-text" id="modalText">This action cannot be undone.</p>
+        <div class="modal-actions">
+            <button class="modal-button modal-button-cancel" id="modalCancelBtn">Cancel</button>
+            <button class="modal-button modal-button-confirm" id="modalConfirmBtn">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar-custom">
+    <a href="/search" class="active"><i class="fa-solid fa-magnifying-glass"></i>Search</a>
+    <a href="/history"><i class="fa-solid fa-clock-rotate-left"></i>History</a>
+    <a href="/profile"><i class="fa-solid fa-user"></i>Profile</a>
+    <a id="logoutLink" href="#"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+</nav>
+
+<main class="search-container">
+    <h1 class="search-title" th:text="'Welcome, ' + ${userName} + '!'">Welcome, User!</h1>
+    <p class="search-subtitle">QueryWeave turns live web sources into focused answers, key points, and relevant next questions.</p>
+
+    <div class="search-form-wrapper">
+        <form class="search-form" id="searchForm">
+            <input type="text" id="searchInput" class="search-input" placeholder="e.g., What is the future of renewable energy?" required autocomplete="off">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+        <div class="suggestions-container" id="suggestionsContainer"></div>
+    </div>
+
+    <div class="loader" id="loader"></div>
+
+    <div class="results-container" id="resultsContainer">
+        <div class="result-box" id="aiAnswerBox">
+            <div class="result-header">
+                <div class="ai-icon">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <span>QueryWeave AI</span>
+                <div class="result-actions">
+                    <button class="action-icon" id="copyBtn" title="Copy answer">
+                        <i class="fa-solid fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+            <p class="result-content" id="aiAnswerContent"></p>
+        </div>
+
+        <div class="result-box" id="keyPointsContainer">
+            <h3>Key Points</h3>
+            <ul class="key-points-list" id="keyPointsList"></ul>
+        </div>
+
+        <div class="result-box" id="sourcesContainer">
+            <h3>Sources Used</h3>
+            <ul class="sources-list" id="sourcesList"></ul>
+        </div>
+
+        <div class="result-box" id="followUpContainer">
+            <h3>Related Questions</h3>
+            <div class="follow-up-container" id="followUpList"></div>
+        </div>
+    </div>
+</main>
+
+<script>
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+
+    const searchForm = document.getElementById('searchForm');
+    const searchInput = document.getElementById('searchInput');
+    const loader = document.getElementById('loader');
+    const resultsContainer = document.getElementById('resultsContainer');
+    const aiAnswerContent = document.getElementById('aiAnswerContent');
+    const keyPointsContainer = document.getElementById('keyPointsContainer');
+    const keyPointsList = document.getElementById('keyPointsList');
+    const sourcesContainer = document.getElementById('sourcesContainer');
+    const sourcesList = document.getElementById('sourcesList');
+    const followUpContainer = document.getElementById('followUpContainer');
+    const followUpList = document.getElementById('followUpList');
+    const copyToast = document.getElementById('copyToast');
+    const suggestionsContainer = document.getElementById('suggestionsContainer');
+    const modal = document.getElementById('confirmationModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+    const modalCancelBtn = document.getElementById('modalCancelBtn');
+    const logoutLink = document.getElementById('logoutLink');
+
+    let suggestionTimeout;
+    let activeSuggestionIndex = -1;
+    let confirmAction = () => {};
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text || '';
+        return div.innerHTML;
+    }
+
+    function extractDomain(url) {
+        try {
+            return new URL(url).hostname.replace(/^www\./, '');
+        } catch (e) {
+            return url;
+        }
+    }
+
+    function showToast(message) {
+        copyToast.textContent = message;
+        copyToast.classList.add('show');
+        setTimeout(() => {
+            copyToast.classList.remove('show');
+        }, 2000);
+    }
+
+    function showModal(title, text, confirmBtnText, action) {
+        modalTitle.textContent = title;
+        modalText.textContent = text;
+        modalConfirmBtn.textContent = confirmBtnText;
+        confirmAction = action;
+        modal.classList.add('visible');
+    }
+
+    function hideModal() {
+        modal.classList.remove('visible');
+    }
+
+    async function performLogout() {
+        try {
+            await fetch('/logout', { method: 'POST' });
+        } finally {
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.replace('/');
+        }
+    }
+
+    function resetResults() {
+        aiAnswerContent.textContent = '';
+        keyPointsList.innerHTML = '';
+        sourcesList.innerHTML = '';
+        followUpList.innerHTML = '';
+        keyPointsContainer.style.display = 'none';
+        sourcesContainer.style.display = 'none';
+        followUpContainer.style.display = 'none';
+    }
+
+    async function performSearch(query) {
+        const trimmedQuery = (query || '').trim();
+        if (!trimmedQuery) {
+            return;
+        }
+
+        suggestionsContainer.style.display = 'none';
+        resultsContainer.style.display = 'none';
+        resetResults();
+        loader.style.display = 'block';
+
+        try {
+            const response = await fetch('/api/search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: trimmedQuery })
+            });
+
+            if (!response.ok) {
+                throw new Error('Search request failed.');
+            }
+
+            const data = await response.json();
+
+            loader.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            aiAnswerContent.textContent = data.answer || 'Sorry, no answer was generated.';
+
+            displayKeyPoints(data.keyPoints || []);
+            displaySources(data.sources || []);
+            displayFollowUpQuestions(data.followUpQuestions || []);
+        } catch (error) {
+            console.error('Search error:', error);
+            loader.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            aiAnswerContent.textContent = 'Sorry, an error occurred while fetching the answer. Please try again.';
+            keyPointsContainer.style.display = 'none';
+            sourcesContainer.style.display = 'none';
+            followUpContainer.style.display = 'none';
+        }
+    }
+
+    function displayKeyPoints(points) {
+        keyPointsList.innerHTML = '';
+
+        if (points && points.length > 0) {
+            points.forEach(point => {
+                const li = document.createElement('li');
+                li.textContent = point;
+                keyPointsList.appendChild(li);
+            });
+            keyPointsContainer.style.display = 'block';
+        } else {
+            keyPointsContainer.style.display = 'none';
+        }
+    }
+
+    function displaySources(sources) {
+        sourcesList.innerHTML = '';
+
+        if (sources && sources.length > 0) {
+            sources.forEach(source => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = source;
+                a.className = 'source-link';
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                a.innerHTML = `<i class="fa-solid fa-paperclip"></i><span>${escapeHtml(extractDomain(source))}</span>`;
+                li.appendChild(a);
+                sourcesList.appendChild(li);
+            });
+            sourcesContainer.style.display = 'block';
+        } else {
+            sourcesContainer.style.display = 'none';
+        }
+    }
+
+    function displayFollowUpQuestions(questions) {
+        followUpList.innerHTML = '';
+
+        if (questions && questions.length > 0) {
+            questions.forEach(question => {
+                const button = document.createElement('button');
+                button.className = 'follow-up-btn';
+                button.type = 'button';
+                button.textContent = question;
+                button.addEventListener('click', () => {
+                    searchInput.value = question;
+                    performSearch(question);
+                });
+                followUpList.appendChild(button);
+            });
+            followUpContainer.style.display = 'block';
+        } else {
+            followUpContainer.style.display = 'none';
+        }
+    }
+
+    function displaySuggestions(suggestions) {
+        suggestionsContainer.innerHTML = '';
+
+        if (!suggestions || suggestions.length === 0) {
+            suggestionsContainer.style.display = 'none';
+            return;
+        }
+
+        suggestions.forEach(suggestion => {
+            const item = document.createElement('div');
+            item.className = 'suggestion-item';
+            item.textContent = suggestion;
+            item.addEventListener('click', () => {
+                searchInput.value = suggestion;
+                suggestionsContainer.style.display = 'none';
+                performSearch(suggestion);
+            });
+            suggestionsContainer.appendChild(item);
+        });
+
+        suggestionsContainer.style.display = 'block';
+        activeSuggestionIndex = -1;
+    }
+
+    function updateActiveSuggestion(items) {
+        items.forEach(item => item.classList.remove('active'));
+        if (activeSuggestionIndex > -1 && items[activeSuggestionIndex]) {
+            items[activeSuggestionIndex].classList.add('active');
+            searchInput.value = items[activeSuggestionIndex].textContent;
+        }
+    }
+
+    searchForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        performSearch(searchInput.value);
+    });
+
+    searchInput.addEventListener('input', () => {
+        clearTimeout(suggestionTimeout);
+
+        suggestionTimeout = setTimeout(async () => {
+            const query = searchInput.value.trim();
+
+            if (query.length <= 1) {
+                suggestionsContainer.style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/suggestions?q=${encodeURIComponent(query)}`);
+                if (!response.ok) {
+                    throw new Error('Suggestion request failed.');
+                }
+                const suggestions = await response.json();
+                displaySuggestions(suggestions);
+            } catch (error) {
+                console.error('Suggestion error:', error);
+                suggestionsContainer.style.display = 'none';
+            }
+        }, 300);
+    });
+
+    searchInput.addEventListener('keydown', (event) => {
+        const items = suggestionsContainer.querySelectorAll('.suggestion-item');
+        if (items.length === 0) {
+            return;
+        }
+
+        if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            activeSuggestionIndex = (activeSuggestionIndex + 1) % items.length;
+            updateActiveSuggestion(items);
+        } else if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            activeSuggestionIndex = (activeSuggestionIndex - 1 + items.length) % items.length;
+            updateActiveSuggestion(items);
+        } else if (event.key === 'Enter' && activeSuggestionIndex > -1) {
+            event.preventDefault();
+            items[activeSuggestionIndex].click();
+        }
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!searchForm.contains(event.target)) {
+            suggestionsContainer.style.display = 'none';
+        }
+    });
+
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+        const answer = aiAnswerContent.textContent.trim();
+        if (!answer) {
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(answer);
+            showToast('Copied to clipboard!');
+        } catch (error) {
+            console.error('Copy error:', error);
+        }
+    });
+
+    logoutLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        showModal(
+            'Confirm Logout',
+            'Are you sure you want to log out of your session?',
+            'Logout',
+            () => {
+                hideModal();
+                performLogout();
+            }
+        );
+    });
+
+    modalCancelBtn.addEventListener('click', hideModal);
+    modalConfirmBtn.addEventListener('click', () => confirmAction());
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            hideModal();
+        }
+    });
+</script>
+
+</body>
+</html>

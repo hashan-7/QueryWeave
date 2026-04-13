@@ -1,0 +1,636 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Synapse Search - Login</title>-->
+<!--    <style>-->
+<!--        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');-->
+
+<!--        :root {-->
+<!--            &#45;&#45;background-color: #0d1117;-->
+<!--            &#45;&#45;container-bg: rgba(22, 27, 34, 0.75);-->
+<!--            &#45;&#45;primary-color: #58a6ff;-->
+<!--            &#45;&#45;text-color: #c9d1d9;-->
+<!--            &#45;&#45;heading-color: #ffffff;-->
+<!--            &#45;&#45;border-color: #30363d;-->
+<!--            &#45;&#45;shadow-color: rgba(88, 166, 255, 0.2);-->
+<!--            &#45;&#45;glow-color: rgba(88, 166, 255, 0.1);-->
+<!--        }-->
+
+<!--        * {-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--        }-->
+
+<!--        html {-->
+<!--            scroll-behavior: smooth;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            font-family: 'Inter', sans-serif;-->
+<!--            background-color: var(&#45;&#45;background-color);-->
+<!--            color: var(&#45;&#45;text-color);-->
+<!--            min-height: 100vh;-->
+<!--            overflow-x: hidden;-->
+<!--            position: relative;-->
+<!--        }-->
+
+<!--        .background-shapes {-->
+<!--            position: fixed;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            z-index: -1;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .shape {-->
+<!--            position: absolute;-->
+<!--            border-radius: 50%;-->
+<!--            background: linear-gradient(45deg, var(&#45;&#45;primary-color), #a371f7);-->
+<!--            opacity: 0.1;-->
+<!--            animation: float 20s infinite ease-in-out alternate;-->
+<!--        }-->
+
+<!--        .shape1 { width: 400px; height: 400px; top: -150px; left: -150px; animation-duration: 25s; }-->
+<!--        .shape2 { width: 300px; height: 300px; bottom: -100px; right: -100px; animation-duration: 30s; }-->
+<!--        .shape3 { width: 200px; height: 200px; top: 50%; left: 40%; animation-duration: 18s; }-->
+
+<!--        @keyframes float {-->
+<!--            0% { transform: translateY(0px) translateX(0px) rotate(0deg); }-->
+<!--            100% { transform: translateY(40px) translateX(-30px) rotate(180deg); }-->
+<!--        }-->
+
+<!--        .main-container {-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            min-height: 100vh;-->
+<!--            padding: 40px 20px;-->
+<!--        }-->
+
+<!--        .login-card {-->
+<!--            background-color: var(&#45;&#45;container-bg);-->
+<!--            padding: 40px;-->
+<!--            border-radius: 16px;-->
+<!--            border: 1px solid var(&#45;&#45;border-color);-->
+<!--            text-align: center;-->
+<!--            width: 100%;-->
+<!--            max-width: 420px;-->
+<!--            z-index: 1;-->
+<!--            position: relative;-->
+<!--            box-shadow: 0 10px 30px rgba(0,0,0,0.2), 0 0 80px var(&#45;&#45;glow-color) inset;-->
+<!--            backdrop-filter: blur(12px);-->
+<!--            animation: fadeIn 1s ease-out;-->
+<!--        }-->
+
+<!--        @keyframes fadeIn {-->
+<!--            from { opacity: 0; transform: scale(0.95) translateY(20px); }-->
+<!--            to { opacity: 1; transform: scale(1) translateY(0); }-->
+<!--        }-->
+
+<!--        .logo {-->
+<!--            width: 60px;-->
+<!--            height: 60px;-->
+<!--            border: 2px solid var(&#45;&#45;primary-color);-->
+<!--            border-radius: 50%;-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            margin: 0 auto 24px auto;-->
+<!--            animation: spin 10s linear infinite;-->
+<!--        }-->
+
+<!--        .logo-text { font-size: 1.2rem; font-weight: 700; color: var(&#45;&#45;primary-color); }-->
+
+<!--        @keyframes spin {-->
+<!--            from { transform: rotate(0deg); }-->
+<!--            to { transform: rotate(360deg); }-->
+<!--        }-->
+
+<!--        .headline { font-size: 2rem; font-weight: 700; color: var(&#45;&#45;heading-color); margin-bottom: 12px; }-->
+<!--        .sub-headline { font-size: 1rem; margin-bottom: 32px; line-height: 1.6; max-width: 320px; margin-left: auto; margin-right: auto; }-->
+
+<!--        .login-button {-->
+<!--            background: linear-gradient(90deg, #58a6ff, #a371f7);-->
+<!--            color: #fff;-->
+<!--            text-decoration: none;-->
+<!--            padding: 14px 20px;-->
+<!--            border-radius: 25px;-->
+<!--            font-size: 1rem;-->
+<!--            font-weight: 600;-->
+<!--            cursor: pointer;-->
+<!--            width: 100%;-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            gap: 10px;-->
+<!--            transition: all 0.3s ease;-->
+<!--            box-shadow: 0 4px 15px var(&#45;&#45;shadow-color);-->
+<!--        }-->
+
+<!--        .login-button:hover {-->
+<!--            transform: translateY(-3px) scale(1.02);-->
+<!--            box-shadow: 0 8px 25px var(&#45;&#45;shadow-color);-->
+<!--        }-->
+
+<!--        .login-button svg { width: 24px; height: 24px; }-->
+
+<!--        .content-section {-->
+<!--            width: 100%;-->
+<!--            padding: 80px 20px;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            align-items: center;-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--        .section-title {-->
+<!--            font-size: 2.5rem;-->
+<!--            color: var(&#45;&#45;heading-color);-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+
+<!--        .section-subtitle {-->
+<!--            font-size: 1.1rem;-->
+<!--            max-width: 600px;-->
+<!--            margin-bottom: 60px;-->
+<!--        }-->
+
+<!--        .features-grid {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));-->
+<!--            gap: 30px;-->
+<!--            width: 100%;-->
+<!--            max-width: 1000px;-->
+<!--        }-->
+
+<!--        .feature-card {-->
+<!--            background: var(&#45;&#45;container-bg);-->
+<!--            border: 1px solid var(&#45;&#45;border-color);-->
+<!--            padding: 30px;-->
+<!--            border-radius: 16px;-->
+<!--            backdrop-filter: blur(12px);-->
+<!--            transition: transform 0.3s ease, box-shadow 0.3s ease;-->
+<!--        }-->
+
+<!--        .feature-card:hover {-->
+<!--            transform: translateY(-10px);-->
+<!--            box-shadow: 0 15px 40px rgba(0,0,0,0.3), 0 0 40px var(&#45;&#45;glow-color) inset;-->
+<!--        }-->
+
+<!--        .feature-card h3 { font-size: 1.2rem; color: var(&#45;&#45;heading-color); margin-bottom: 12px; }-->
+<!--        .feature-card p { font-size: 0.9rem; line-height: 1.7; }-->
+
+<!--        .about-section {-->
+<!--            background-color: #161b22;-->
+<!--            border-top: 1px solid var(&#45;&#45;border-color);-->
+<!--        }-->
+
+<!--        .about-content {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 40px;-->
+<!--            max-width: 1000px;-->
+<!--            text-align: left;-->
+<!--        }-->
+
+<!--        .about-text { flex: 1; }-->
+<!--        .about-icon {-->
+<!--            flex-shrink: 0;-->
+<!--            width: 120px;-->
+<!--            height: 120px;-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--        }-->
+
+<!--        @media (max-width: 768px) {-->
+<!--            .about-content { flex-direction: column; text-align: center; }-->
+<!--            .about-icon { width: 80px; height: 80px; }-->
+<!--        }-->
+
+<!--        .reveal {-->
+<!--            opacity: 0;-->
+<!--            transform: translateY(50px);-->
+<!--            transition: opacity 0.8s ease-out, transform 0.8s ease-out;-->
+<!--        }-->
+
+<!--        .reveal.is-visible {-->
+<!--            opacity: 1;-->
+<!--            transform: translateY(0);-->
+<!--        }-->
+
+<!--        .site-footer {-->
+<!--            padding: 40px 20px;-->
+<!--            text-align: center;-->
+<!--            background-color: #161b22;-->
+<!--            border-top: 1px solid var(&#45;&#45;border-color);-->
+<!--        }-->
+<!--        .site-footer p {-->
+<!--            margin: 0;-->
+<!--            color: #8b949e;-->
+<!--            font-size: 0.9rem;-->
+<!--        }-->
+<!--        .site-footer span {-->
+<!--            font-weight: 600;-->
+<!--            color: var(&#45;&#45;text-color);-->
+<!--        }-->
+
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="background-shapes">-->
+<!--    <div class="shape shape1"></div>-->
+<!--    <div class="shape shape2"></div>-->
+<!--    <div class="shape shape3"></div>-->
+<!--</div>-->
+
+<!--<div class="main-container">-->
+<!--    <div class="login-card">-->
+<!--        <div class="logo">-->
+<!--            <span class="logo-text">h7</span>-->
+<!--        </div>-->
+<!--        <h1 class="headline">Search Smarter, Not Harder.</h1>-->
+<!--        <p class="sub-headline">Synapse Search understands your questions to deliver intelligent, summarized answers from across the web. Sign in to begin.</p>-->
+
+<!--        <a href="/oauth2/authorization/google" class="login-button">-->
+<!--            <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid" viewBox="0 0 256 262"><path fill="#4285F4" d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.686H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"/><path fill="#34A853" d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"/><path fill="#FBBC05" d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782"/><path fill="#EB4335" d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"/></svg>-->
+<!--            <span>Sign In with Google</span>-->
+<!--        </a>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<section class="content-section features-section">-->
+<!--    <h2 class="section-title reveal">Why Synapse Search?</h2>-->
+<!--    <p class="section-subtitle reveal">We blend cutting-edge AI with a beautifully simple interface to deliver an unparalleled information discovery experience.</p>-->
+<!--    <div class="features-grid">-->
+<!--        <div class="feature-card reveal">-->
+<!--            <h3>Instant Answers</h3>-->
+<!--            <p>No more digging through pages. Get concise, AI-generated summaries from the best sources on the web, instantly.</p>-->
+<!--        </div>-->
+<!--        <div class="feature-card reveal">-->
+<!--            <h3>Real-time Web Search</h3>-->
+<!--            <p>Our AI is always up-to-date, searching the live web to ensure you get the most current and relevant information available.</p>-->
+<!--        </div>-->
+<!--        <div class="feature-card reveal">-->
+<!--            <h3>Secure & Private</h3>-->
+<!--            <p>Your searches are your own. We ensure a secure and private experience with industry-standard authentication.</p>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+
+<!--<section class="content-section about-section">-->
+<!--    <div class="about-content">-->
+<!--        <div class="about-icon reveal">-->
+<!--            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">-->
+<!--                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 0 0 2.25-2.25V8.25a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 8.25v7.5a2.25 2.25 0 0 0 2.25 2.25Z" />-->
+<!--            </svg>-->
+<!--        </div>-->
+<!--        <div class="about-text reveal">-->
+<!--            <h2 class="section-title" style="text-align: left;">Our Mission</h2>-->
+<!--            <p>In a world overflowing with information, finding clear answers can be a challenge. Our mission is to cut through the noise. We leverage the power of artificial intelligence not just to find information, but to understand it, synthesize it, and present it to you in a way that's both meaningful and easy to digest. This project is the first step towards a smarter, more intuitive way to interact with the web's vast knowledge.</p>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+
+<!--<footer class="site-footer">-->
+<!--    <p>A Project by <span>h7</span>.</p>-->
+<!--</footer>-->
+
+<!--<script>-->
+<!--    const observer = new IntersectionObserver((entries) => {-->
+<!--        entries.forEach(entry => {-->
+<!--            if (entry.isIntersecting) {-->
+<!--                entry.target.classList.add('is-visible');-->
+<!--            }-->
+<!--        });-->
+<!--    }, {-->
+<!--        threshold: 0.1-->
+<!--    });-->
+
+<!--    const revealElements = document.querySelectorAll('.reveal');-->
+<!--    revealElements.forEach(el => observer.observe(el));-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QueryWeave - Login</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        :root {
+            --background-color: #0d1117;
+            --container-bg: rgba(22, 27, 34, 0.75);
+            --primary-color: #58a6ff;
+            --text-color: #c9d1d9;
+            --heading-color: #ffffff;
+            --border-color: #30363d;
+            --shadow-color: rgba(88, 166, 255, 0.2);
+            --glow-color: rgba(88, 166, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .background-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), #a371f7);
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+
+        .shape1 { width: 400px; height: 400px; top: -150px; left: -150px; animation-duration: 25s; }
+        .shape2 { width: 300px; height: 300px; bottom: -100px; right: -100px; animation-duration: 30s; }
+        .shape3 { width: 200px; height: 200px; top: 50%; left: 40%; animation-duration: 18s; }
+
+        @keyframes float {
+            0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+            100% { transform: translateY(40px) translateX(-30px) rotate(180deg); }
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .login-card {
+            background-color: var(--container-bg);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            width: 100%;
+            max-width: 420px;
+            z-index: 1;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 80px var(--glow-color) inset;
+            backdrop-filter: blur(12px);
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 24px auto;
+            animation: spin 10s linear infinite;
+        }
+
+        .logo-text {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 0.06em;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .headline {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--heading-color);
+            margin-bottom: 12px;
+        }
+
+        .sub-headline {
+            font-size: 1rem;
+            margin-bottom: 32px;
+            line-height: 1.6;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .login-button {
+            background: linear-gradient(90deg, #58a6ff, #a371f7);
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        .login-button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px var(--shadow-color);
+        }
+
+        .login-button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .content-section {
+            width: 100%;
+            padding: 80px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--heading-color);
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-bottom: 60px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .feature-card {
+            background: var(--container-bg);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 40px var(--glow-color) inset;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            color: var(--heading-color);
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .site-footer {
+            padding: 40px 20px;
+            text-align: center;
+            background-color: #161b22;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .site-footer p {
+            margin: 0;
+            color: #8b949e;
+            font-size: 0.9rem;
+        }
+
+        .site-footer span {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="background-shapes">
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
+</div>
+
+<div class="main-container">
+    <div class="login-card">
+        <div class="logo">
+            <span class="logo-text">QW</span>
+        </div>
+        <h1 class="headline">Search Smarter, Not Harder.</h1>
+        <p class="sub-headline">QueryWeave understands your questions and turns web sources into clear, intelligent answers. Sign in to begin.</p>
+
+        <a href="/oauth2/authorization/google" class="login-button">
+            <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid" viewBox="0 0 256 262"><path fill="#4285F4" d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.686H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"/><path fill="#34A853" d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"/><path fill="#FBBC05" d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782"/><path fill="#EB4335" d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"/></svg>
+            <span>Sign In with Google</span>
+        </a>
+    </div>
+</div>
+
+<section class="content-section features-section">
+    <h2 class="section-title reveal">Why QueryWeave?</h2>
+    <p class="section-subtitle reveal">A focused research experience that blends live web results, source-aware summaries, and a clean interface.</p>
+    <div class="features-grid">
+        <div class="feature-card reveal">
+            <h3>Intelligent Answers</h3>
+            <p>Get concise and useful answers built from multiple web sources instead of only a list of links.</p>
+        </div>
+        <div class="feature-card reveal">
+            <h3>Live Search</h3>
+            <p>Search the web in real time and extract the most relevant information from trusted pages.</p>
+        </div>
+        <div class="feature-card reveal">
+            <h3>Private Access</h3>
+            <p>Use your own account securely and keep your search flow organized with personal history and session-aware access.</p>
+        </div>
+    </div>
+</section>
+
+<footer class="site-footer">
+    <p>Built by <span>h7</span> · Powered as <span>QueryWeave</span>.</p>
+</footer>
+
+<script>
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

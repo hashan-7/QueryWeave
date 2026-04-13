@@ -1,0 +1,985 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Your Profile - Synapse Search</title>-->
+
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">-->
+<!--    <style>-->
+<!--        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');-->
+
+<!--        :root {-->
+<!--            &#45;&#45;background-color: #0d1117;-->
+<!--            &#45;&#45;container-bg: #161b22;-->
+<!--            &#45;&#45;primary-color: #58a6ff;-->
+<!--            &#45;&#45;text-color: #c9d1d9;-->
+<!--            &#45;&#45;heading-color: #ffffff;-->
+<!--            &#45;&#45;border-color: #30363d;-->
+<!--            &#45;&#45;danger-color: #d73a49;-->
+<!--            &#45;&#45;danger-hover-color: #b62331;-->
+<!--            &#45;&#45;shadow-color: rgba(88, 166, 255, 0.2);-->
+<!--            &#45;&#45;glow-color: rgba(88, 166, 255, 0.1);-->
+<!--        }-->
+
+<!--        * {-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            font-family: 'Inter', sans-serif;-->
+<!--            background-color: var(&#45;&#45;background-color);-->
+<!--            color: var(&#45;&#45;text-color);-->
+<!--            min-height: 100vh;-->
+<!--            position: relative;-->
+<!--        }-->
+
+<!--        .background-shapes {-->
+<!--            position: fixed;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            z-index: -1;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .shape {-->
+<!--            position: absolute;-->
+<!--            border-radius: 50%;-->
+<!--            background: linear-gradient(45deg, var(&#45;&#45;primary-color), #a371f7);-->
+<!--            opacity: 0.1;-->
+<!--            animation: float 20s infinite ease-in-out alternate;-->
+<!--        }-->
+
+<!--        .shape1 { width: 400px; height: 400px; top: -150px; left: -150px; animation-duration: 25s; }-->
+<!--        .shape2 { width: 300px; height: 300px; bottom: -100px; right: -100px; animation-duration: 30s; }-->
+
+<!--        @keyframes float {-->
+<!--            0% { transform: translateY(0px) translateX(0px); }-->
+<!--            100% { transform: translateY(40px) translateX(-30px); }-->
+<!--        }-->
+
+
+<!--        .navbar-custom {-->
+<!--            position: fixed;-->
+<!--            top: 20px;-->
+<!--            left: 50%;-->
+<!--            transform: translateX(-50%);-->
+<!--            width: fit-content;-->
+<!--            background-color: rgba(22, 27, 34, 0.7);-->
+<!--            backdrop-filter: blur(10px);-->
+<!--            border-radius: 45px;-->
+<!--            padding: 8px;-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            z-index: 1000;-->
+<!--            border: 1px solid var(&#45;&#45;border-color);-->
+<!--            animation: fadeInDown 0.8s ease-out;-->
+<!--        }-->
+
+<!--        .navbar-custom a {-->
+<!--            color: var(&#45;&#45;text-color);-->
+<!--            padding: 10px 20px;-->
+<!--            text-decoration: none;-->
+<!--            border-radius: 40px;-->
+<!--            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;-->
+<!--            margin: 0 5px;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            font-size: 1rem;-->
+<!--            font-weight: 500;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+
+<!--        .navbar-custom a i {-->
+<!--            margin-right: 8px;-->
+<!--            width: 16px;-->
+<!--        }-->
+
+<!--        .navbar-custom a:hover,-->
+<!--        .navbar-custom a.active {-->
+<!--            background-color: var(&#45;&#45;primary-color);-->
+<!--            color: var(&#45;&#45;background-color);-->
+<!--        }-->
+
+
+<!--        .main-container {-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            min-height: 100vh;-->
+<!--            padding: 120px 2rem 4rem 2rem;-->
+<!--        }-->
+
+<!--        .profile-card {-->
+<!--            background-color: var(&#45;&#45;container-bg);-->
+<!--            padding: 40px;-->
+<!--            border-radius: 16px;-->
+<!--            border: 1px solid var(&#45;&#45;border-color);-->
+<!--            text-align: center;-->
+<!--            width: 100%;-->
+<!--            max-width: 450px;-->
+<!--            z-index: 1;-->
+<!--            position: relative;-->
+<!--            box-shadow: 0 10px 30px rgba(0,0,0,0.2), 0 0 80px var(&#45;&#45;glow-color) inset;-->
+<!--            animation: fadeInUp 1s ease-out;-->
+<!--        }-->
+
+<!--        .profile-picture-container {-->
+<!--            margin: 0 auto 24px auto;-->
+<!--            perspective: 1000px;-->
+<!--            width: 120px;-->
+<!--            height: 120px;-->
+<!--        }-->
+
+<!--        .profile-picture {-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            border-radius: 50%;-->
+<!--            border: 4px solid var(&#45;&#45;primary-color);-->
+<!--            object-fit: cover;-->
+
+<!--            animation: flip-horizontal 8s infinite ease-in-out alternate;-->
+<!--        }-->
+
+
+<!--        @keyframes flip-horizontal {-->
+<!--            0% { transform: rotateY(-20deg); }-->
+<!--            100% { transform: rotateY(20deg); }-->
+<!--        }-->
+
+<!--        .profile-name {-->
+<!--            font-size: 2rem;-->
+<!--            font-weight: 700;-->
+<!--            color: var(&#45;&#45;heading-color);-->
+<!--            margin-bottom: 8px;-->
+<!--        }-->
+
+<!--        .profile-email {-->
+<!--            font-size: 1rem;-->
+<!--            color: var(&#45;&#45;text-color);-->
+<!--            margin-bottom: 32px;-->
+<!--        }-->
+
+<!--        .settings-section {-->
+<!--            margin-top: 2rem;-->
+<!--            text-align: left;-->
+<!--        }-->
+
+<!--        .settings-title {-->
+<!--            font-size: 1.2rem;-->
+<!--            color: var(&#45;&#45;heading-color);-->
+<!--            margin-bottom: 1rem;-->
+<!--            border-bottom: 1px solid var(&#45;&#45;border-color);-->
+<!--            padding-bottom: 0.5rem;-->
+<!--        }-->
+
+<!--        .settings-actions {-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            gap: 1rem;-->
+<!--        }-->
+
+<!--        .action-button {-->
+<!--            background: var(&#45;&#45;container-bg);-->
+<!--            color: var(&#45;&#45;text-color);-->
+<!--            padding: 12px 20px;-->
+<!--            border-radius: 8px;-->
+<!--            font-size: 1rem;-->
+<!--            font-weight: 600;-->
+<!--            cursor: pointer;-->
+<!--            width: 100%;-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--            gap: 10px;-->
+<!--            transition: all 0.3s ease;-->
+<!--            border: 1px solid var(&#45;&#45;border-color);-->
+<!--        }-->
+
+<!--        .action-button:hover {-->
+<!--            border-color: var(&#45;&#45;primary-color);-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--        }-->
+
+<!--        .action-button.delete {-->
+<!--            border-color: var(&#45;&#45;danger-color);-->
+<!--            color: var(&#45;&#45;danger-color);-->
+<!--        }-->
+
+<!--        .action-button.delete:hover {-->
+<!--            background: var(&#45;&#45;danger-color);-->
+<!--            color: #fff;-->
+<!--        }-->
+
+
+<!--        .modal-backdrop {-->
+<!--            position: fixed;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            background: rgba(0, 0, 0, 0.6);-->
+<!--            backdrop-filter: blur(5px);-->
+<!--            z-index: 2000;-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            opacity: 0;-->
+<!--            visibility: hidden;-->
+<!--            transition: opacity 0.3s ease, visibility 0.3s ease;-->
+<!--        }-->
+
+<!--        .modal-backdrop.visible {-->
+<!--            opacity: 1;-->
+<!--            visibility: visible;-->
+<!--        }-->
+
+<!--        .modal-content {-->
+<!--            background-color: var(&#45;&#45;container-bg);-->
+<!--            padding: 30px;-->
+<!--            border-radius: 16px;-->
+<!--            border: 1px solid var(&#45;&#45;border-color);-->
+<!--            width: 90%;-->
+<!--            max-width: 400px;-->
+<!--            text-align: center;-->
+<!--            transform: scale(0.95);-->
+<!--            transition: transform 0.3s ease;-->
+<!--        }-->
+
+<!--        .modal-backdrop.visible .modal-content {-->
+<!--            transform: scale(1);-->
+<!--        }-->
+
+<!--        .modal-title {-->
+<!--            font-size: 1.5rem;-->
+<!--            color: var(&#45;&#45;heading-color);-->
+<!--            margin-bottom: 1rem;-->
+<!--        }-->
+
+<!--        .modal-text {-->
+<!--            margin-bottom: 2rem;-->
+<!--        }-->
+
+<!--        .modal-actions {-->
+<!--            display: flex;-->
+<!--            gap: 1rem;-->
+<!--        }-->
+
+<!--        .modal-button {-->
+<!--            flex: 1;-->
+<!--            padding: 10px 20px;-->
+<!--            border-radius: 25px;-->
+<!--            font-size: 1rem;-->
+<!--            font-weight: 600;-->
+<!--            cursor: pointer;-->
+<!--            border: none;-->
+<!--            transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        .modal-button-cancel {-->
+<!--            background-color: #30363d;-->
+<!--            color: #fff;-->
+<!--        }-->
+<!--        .modal-button-cancel:hover {-->
+<!--            background-color: #484f58;-->
+<!--        }-->
+
+<!--        .modal-button-confirm {-->
+<!--            background-color: var(&#45;&#45;danger-color);-->
+<!--            color: #fff;-->
+<!--        }-->
+<!--        .modal-button-confirm:hover {-->
+<!--            background-color: var(&#45;&#45;danger-hover-color);-->
+<!--        }-->
+
+
+<!--        @keyframes fadeInDown {-->
+<!--            from { opacity: 0; transform: translateY(-20px) translateX(-50%); }-->
+<!--            to { opacity: 1; transform: translateY(0) translateX(-50%); }-->
+<!--        }-->
+
+<!--        @keyframes fadeInUp {-->
+<!--            from { opacity: 0; transform: translateY(20px); }-->
+<!--            to { opacity: 1; transform: translateY(0); }-->
+<!--        }-->
+
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="background-shapes">-->
+<!--    <div class="shape shape1"></div>-->
+<!--    <div class="shape shape2"></div>-->
+<!--</div>-->
+
+
+<!--<div class="modal-backdrop" id="confirmationModal">-->
+<!--    <div class="modal-content">-->
+<!--        <h2 class="modal-title" id="modalTitle">Are you sure?</h2>-->
+<!--        <p class="modal-text" id="modalText">This action cannot be undone.</p>-->
+<!--        <div class="modal-actions">-->
+<!--            <button class="modal-button modal-button-cancel" id="modalCancelBtn">Cancel</button>-->
+<!--            <button class="modal-button modal-button-confirm" id="modalConfirmBtn">Confirm</button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<nav class="navbar-custom">-->
+<!--    <a href="/search"><i class="fa-solid fa-magnifying-glass"></i>Search</a>-->
+<!--    <a href="/history"><i class="fa-solid fa-clock-rotate-left"></i>History</a>-->
+<!--    <a href="/profile" class="active"><i class="fa-solid fa-user"></i>Profile</a>-->
+<!--    <a id="logoutLink" href="#"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>-->
+<!--</nav>-->
+
+<!--<main class="main-container">-->
+<!--    <div class="profile-card">-->
+<!--        <div class="profile-picture-container">-->
+<!--            <img th:src="${userPicture}" class="profile-picture" alt="Profile Picture"-->
+<!--                 th:data-username="${userName}"-->
+<!--                 onerror="this.onerror=null; this.src='https://placehold.co/120x120/58a6ff/0d1117?text=' + this.getAttribute('data-username').substring(0, 1)"/>-->
+<!--        </div>-->
+<!--        <h1 class="profile-name" th:text="${userName}">User Name</h1>-->
+<!--        <p class="profile-email" th:text="${userEmail}">user.email@example.com</p>-->
+
+<!--        <div class="settings-section">-->
+<!--            <h2 class="settings-title">Account Settings</h2>-->
+<!--            <div class="settings-actions">-->
+<!--                <button class="action-button" id="clearHistoryBtn">-->
+<!--                    <span><i class="fa-solid fa-broom"></i> Clear Search History</span>-->
+<!--                    <i class="fa-solid fa-angle-right"></i>-->
+<!--                </button>-->
+<!--                <button class="action-button delete" id="deleteAccountBtn">-->
+<!--                    <span><i class="fa-solid fa-trash-can"></i> Delete Account</span>-->
+<!--                    <i class="fa-solid fa-angle-right"></i>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</main>-->
+
+<!--<script>-->
+<!--    const modal = document.getElementById('confirmationModal');-->
+<!--    const modalTitle = document.getElementById('modalTitle');-->
+<!--    const modalText = document.getElementById('modalText');-->
+<!--    const modalConfirmBtn = document.getElementById('modalConfirmBtn');-->
+<!--    const modalCancelBtn = document.getElementById('modalCancelBtn');-->
+
+<!--    const logoutLink = document.getElementById('logoutLink');-->
+<!--    const deleteAccountBtn = document.getElementById('deleteAccountBtn');-->
+<!--    const clearHistoryBtn = document.getElementById('clearHistoryBtn');-->
+
+<!--    let confirmAction = () => {};-->
+
+<!--    function showModal(title, text, confirmBtnText, action) {-->
+<!--        modalTitle.textContent = title;-->
+<!--        modalText.textContent = text;-->
+<!--        modalConfirmBtn.textContent = confirmBtnText;-->
+<!--        confirmAction = action;-->
+<!--        modal.classList.add('visible');-->
+<!--    }-->
+
+<!--    function hideModal() {-->
+<!--        modal.classList.remove('visible');-->
+<!--    }-->
+
+<!--    logoutLink.addEventListener('click', (e) => {-->
+<!--        e.preventDefault();-->
+<!--        showModal(-->
+<!--            'Confirm Logout',-->
+<!--            'Are you sure you want to log out of your session?',-->
+<!--            'Logout',-->
+<!--            () => {-->
+<!--                fetch('/logout', {-->
+<!--                    method: 'POST'-->
+<!--                }).then(response => {-->
+<!--                    if (response.ok) {-->
+<!--                        window.location.href = '/';-->
+<!--                    }-->
+<!--                }).catch(error => console.error('Logout error:', error));-->
+<!--            }-->
+<!--        );-->
+<!--    });-->
+
+
+<!--    clearHistoryBtn.addEventListener('click', () => {-->
+<!--        showModal(-->
+<!--            'Clear History',-->
+<!--            'Are you sure you want to permanently delete your entire search history?',-->
+<!--            'Clear',-->
+<!--            () => {-->
+<!--                fetch('/api/history', {-->
+<!--                    method: 'DELETE'-->
+<!--                }).then(response => {-->
+<!--                    if (response.ok) {-->
+<!--                        hideModal();-->
+<!--                        // You can optionally show a success message before reloading-->
+<!--                        window.location.reload();-->
+<!--                    } else {-->
+<!--                        alert('Failed to clear history. Please try again.');-->
+<!--                        hideModal();-->
+<!--                    }-->
+<!--                }).catch(error => {-->
+<!--                    console.error('Clear history error:', error);-->
+<!--                    hideModal();-->
+<!--                });-->
+<!--            }-->
+<!--        );-->
+<!--    });-->
+
+
+<!--    deleteAccountBtn.addEventListener('click', () => {-->
+<!--        showModal(-->
+<!--            'Delete Account',-->
+<!--            'This is permanent. All your data, including your search history, will be erased. Please copy any important information before proceeding.',-->
+<!--            'Delete',-->
+<!--            () => {-->
+<!--                fetch('/api/user', {-->
+<!--                    method: 'DELETE'-->
+<!--                }).then(response => {-->
+<!--                    if (response.ok) {-->
+<!--                        fetch('/logout', { method: 'POST' })-->
+<!--                            .then(() => window.location.href = '/');-->
+<!--                    } else {-->
+<!--                        alert('Failed to delete account. Please try again.');-->
+<!--                        hideModal();-->
+<!--                    }-->
+<!--                }).catch(error => {-->
+<!--                    console.error('Delete account error:', error);-->
+<!--                    hideModal();-->
+<!--                });-->
+<!--            }-->
+<!--        );-->
+<!--    });-->
+
+<!--    modalCancelBtn.addEventListener('click', hideModal);-->
+<!--    modalConfirmBtn.addEventListener('click', () => {-->
+<!--        confirmAction();-->
+<!--    });-->
+<!--    modal.addEventListener('click', (e) => {-->
+<!--        if (e.target === modal) {-->
+<!--            hideModal();-->
+<!--        }-->
+<!--    });-->
+
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - QueryWeave</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        :root {
+            --background-color: #0d1117;
+            --container-bg: #161b22;
+            --primary-color: #58a6ff;
+            --text-color: #c9d1d9;
+            --heading-color: #ffffff;
+            --border-color: #30363d;
+            --danger-color: #d73a49;
+            --danger-hover-color: #b62331;
+            --shadow-color: rgba(88, 166, 255, 0.2);
+            --glow-color: rgba(88, 166, 255, 0.1);
+            --success-color: #2da44e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .background-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), #a371f7);
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+
+        .shape1 { width: 400px; height: 400px; top: -150px; left: -150px; animation-duration: 25s; }
+        .shape2 { width: 300px; height: 300px; bottom: -100px; right: -100px; animation-duration: 30s; }
+
+        @keyframes float {
+            0% { transform: translateY(0px) translateX(0px); }
+            100% { transform: translateY(40px) translateX(-30px); }
+        }
+
+        .navbar-custom {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: fit-content;
+            background-color: rgba(22, 27, 34, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 45px;
+            padding: 8px;
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+            border: 1px solid var(--border-color);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .navbar-custom a {
+            color: var(--text-color);
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 40px;
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+            margin: 0 5px;
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .navbar-custom a i {
+            margin-right: 8px;
+            width: 16px;
+        }
+
+        .navbar-custom a:hover,
+        .navbar-custom a.active {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 120px 2rem 4rem 2rem;
+        }
+
+        .profile-card {
+            background-color: var(--container-bg);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            width: 100%;
+            max-width: 450px;
+            z-index: 1;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 80px var(--glow-color) inset;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .profile-picture-container {
+            margin: 0 auto 24px auto;
+            perspective: 1000px;
+            width: 120px;
+            height: 120px;
+        }
+
+        .profile-picture {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid var(--primary-color);
+            object-fit: cover;
+            animation: flip-horizontal 8s infinite ease-in-out alternate;
+        }
+
+        @keyframes flip-horizontal {
+            0% { transform: rotateY(-20deg); }
+            100% { transform: rotateY(20deg); }
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--heading-color);
+            margin-bottom: 8px;
+        }
+
+        .profile-email {
+            font-size: 1rem;
+            color: var(--text-color);
+            margin-bottom: 32px;
+        }
+
+        .settings-section {
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .settings-title {
+            font-size: 1.2rem;
+            color: var(--heading-color);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .settings-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .action-button {
+            background: var(--container-bg);
+            color: var(--text-color);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .action-button:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .action-button.delete {
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        .action-button.delete:hover {
+            background: var(--danger-color);
+            color: #fff;
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-backdrop.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--container-bg);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-backdrop.visible .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-bottom: 1rem;
+        }
+
+        .modal-text {
+            margin-bottom: 2rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .modal-button {
+            flex: 1;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .modal-button-cancel {
+            background-color: #30363d;
+            color: #fff;
+        }
+
+        .modal-button-cancel:hover {
+            background-color: #484f58;
+        }
+
+        .modal-button-confirm {
+            background-color: var(--danger-color);
+            color: #fff;
+        }
+
+        .modal-button-confirm:hover {
+            background-color: var(--danger-hover-color);
+        }
+
+        .toast-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--success-color);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(20px) translateX(-50%);
+        }
+
+        .toast-notification.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) translateX(-50%);
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px) translateX(-50%); }
+            to { opacity: 1; transform: translateY(0) translateX(-50%); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="background-shapes">
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+</div>
+
+<div class="toast-notification" id="toastMessage">Done</div>
+
+<div class="modal-backdrop" id="confirmationModal">
+    <div class="modal-content">
+        <h2 class="modal-title" id="modalTitle">Are you sure?</h2>
+        <p class="modal-text" id="modalText">This action cannot be undone.</p>
+        <div class="modal-actions">
+            <button class="modal-button modal-button-cancel" id="modalCancelBtn">Cancel</button>
+            <button class="modal-button modal-button-confirm" id="modalConfirmBtn">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar-custom">
+    <a href="/search"><i class="fa-solid fa-magnifying-glass"></i>Search</a>
+    <a href="/history"><i class="fa-solid fa-clock-rotate-left"></i>History</a>
+    <a href="/profile" class="active"><i class="fa-solid fa-user"></i>Profile</a>
+    <a id="logoutLink" href="#"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+</nav>
+
+<main class="main-container">
+    <div class="profile-card">
+        <div class="profile-picture-container">
+            <img th:src="${userPicture}" class="profile-picture" alt="Profile Picture"
+                 th:data-username="${userName}"
+                 onerror="this.onerror=null; this.src='https://placehold.co/120x120/58a6ff/0d1117?text=' + this.getAttribute('data-username').substring(0, 1)">
+        </div>
+        <h1 class="profile-name" th:text="${userName}">User Name</h1>
+        <p class="profile-email" th:text="${userEmail}">user.email@example.com</p>
+
+        <div class="settings-section">
+            <h2 class="settings-title">Account Settings</h2>
+            <div class="settings-actions">
+                <button class="action-button" id="clearHistoryBtn">
+                    <span><i class="fa-solid fa-broom"></i> Clear Search History</span>
+                    <i class="fa-solid fa-angle-right"></i>
+                </button>
+                <button class="action-button delete" id="deleteAccountBtn">
+                    <span><i class="fa-solid fa-trash-can"></i> Delete Account</span>
+                    <i class="fa-solid fa-angle-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+
+    const modal = document.getElementById('confirmationModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+    const modalCancelBtn = document.getElementById('modalCancelBtn');
+    const toastMessage = document.getElementById('toastMessage');
+    const logoutLink = document.getElementById('logoutLink');
+    const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+    const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+    let confirmAction = () => {};
+
+    function showToast(message) {
+        toastMessage.textContent = message;
+        toastMessage.classList.add('show');
+        setTimeout(() => {
+            toastMessage.classList.remove('show');
+        }, 2000);
+    }
+
+    function showModal(title, text, confirmBtnText, action) {
+        modalTitle.textContent = title;
+        modalText.textContent = text;
+        modalConfirmBtn.textContent = confirmBtnText;
+        confirmAction = action;
+        modal.classList.add('visible');
+    }
+
+    function hideModal() {
+        modal.classList.remove('visible');
+    }
+
+    async function performLogout() {
+        try {
+            await fetch('/logout', { method: 'POST' });
+        } finally {
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.replace('/');
+        }
+    }
+
+    logoutLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        showModal(
+            'Confirm Logout',
+            'Are you sure you want to log out of your session?',
+            'Logout',
+            async () => {
+                hideModal();
+                await performLogout();
+            }
+        );
+    });
+
+    clearHistoryBtn.addEventListener('click', () => {
+        showModal(
+            'Clear History',
+            'Are you sure you want to permanently delete your entire search history?',
+            'Clear',
+            async () => {
+                try {
+                    const response = await fetch('/api/history', { method: 'DELETE' });
+                    hideModal();
+
+                    if (response.ok) {
+                        showToast('Search history cleared.');
+                    } else {
+                        alert('Failed to clear history. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Clear history error:', error);
+                    hideModal();
+                }
+            }
+        );
+    });
+
+    deleteAccountBtn.addEventListener('click', () => {
+        showModal(
+            'Delete Account',
+            'This is permanent. All your data, including your search history, will be erased.',
+            'Delete',
+            async () => {
+                try {
+                    const response = await fetch('/api/user', { method: 'DELETE' });
+                    if (!response.ok) {
+                        hideModal();
+                        alert('Failed to delete account. Please try again.');
+                        return;
+                    }
+
+                    hideModal();
+                    sessionStorage.clear();
+                    localStorage.clear();
+                    await fetch('/logout', { method: 'POST' });
+                    window.location.replace('/');
+                } catch (error) {
+                    console.error('Delete account error:', error);
+                    hideModal();
+                }
+            }
+        );
+    });
+
+    modalCancelBtn.addEventListener('click', hideModal);
+    modalConfirmBtn.addEventListener('click', () => confirmAction());
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            hideModal();
+        }
+    });
+</script>
+</body>
+</html>
