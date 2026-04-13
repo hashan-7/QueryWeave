@@ -96,5 +96,8 @@ git clone https://github.com/hashan-7/QueryWeave.git
 cd queryweave
 
 ```
+📄 License
+
+This project is licensed under the MIT License.
 
 <p align="center">Made with 💜 by h7</p>
