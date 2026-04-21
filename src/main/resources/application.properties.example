@@ -10,6 +10,10 @@ google.search.engine.id=YOUR_GOOGLE_SEARCH_ENGINE_ID
 hf.space.api-key=YOUR_HF_SPACE_API_KEY
 hf.space.base-url=YOUR_HF_SPACE_BASE_URL
 
+# Search provider: 'google' (default) or 'tavily'
+search.provider=google
+tavily.api.key=YOUR_TAVILY_API_KEY
+
 
 spring.datasource.url=jdbc:mysql://localhost:3306/ai_search?createDatabaseIfNotExist=true
 spring.datasource.username=YOUR_DB_USERNAME

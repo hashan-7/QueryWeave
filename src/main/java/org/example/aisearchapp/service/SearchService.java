@@ -44,6 +44,12 @@ public class SearchService {
     @Value("${hf.space.api-key:}")
     private String hfSpaceApiKey;
 
+    @Value("${tavily.api.key:}")
+    private String tavilyApiKey;
+
+    @Value("${search.provider:google}")
+    private String searchProvider;
+
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final SearchHistoryRepository searchHistoryRepository;
@@ -65,12 +71,28 @@ public class SearchService {
         User user = userService.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found: " + userEmail));
 
-        List<String> links = searchGoogle(normalizedQuery);
+        List<String> links;
+        List<String> scrapedContents;
+
+        if ("tavily".equalsIgnoreCase(searchProvider) && StringUtils.hasText(tavilyApiKey)) {
+            Map<String, List<String>> tavilyResults = searchTavily(normalizedQuery);
+            links = tavilyResults.getOrDefault("links", List.of());
+            scrapedContents = tavilyResults.getOrDefault("contents", List.of());
+        } else {
+            links = searchGoogle(normalizedQuery);
+            scrapedContents = links.isEmpty() ? List.of() : scrapeLinks(links);
+
+            // Fallback to Tavily if Google returns no results and Tavily is configured
+            if (links.isEmpty() && StringUtils.hasText(tavilyApiKey)) {
+                Map<String, List<String>> tavilyResults = searchTavily(normalizedQuery);
+                links = tavilyResults.getOrDefault("links", List.of());
+                scrapedContents = tavilyResults.getOrDefault("contents", List.of());
+            }
+        }
+
         if (links.isEmpty()) {
             return new SearchResponse("No relevant information found.", List.of(), List.of(), List.of());
         }
-
-        List<String> scrapedContents = scrapeLinks(links);
 
         SearchResponse response = summarizeWithHfSpace(normalizedQuery, scrapedContents, links);
 
@@ -148,6 +170,55 @@ public class SearchService {
         }
 
         return links;
+    }
+
+    private Map<String, List<String>> searchTavily(String query) {
+        List<String> links = new ArrayList<>();
+        List<String> contents = new ArrayList<>();
+        Map<String, List<String>> result = new HashMap<>();
+        result.put("links", links);
+        result.put("contents", contents);
+
+        try {
+            String url = "https://api.tavily.com/search";
+
+            Map<String, Object> payload = new HashMap<>();
+            payload.put("api_key", tavilyApiKey);
+            payload.put("query", query);
+            payload.put("include_raw_content", true);
+            payload.put("max_results", 5);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(payload, headers);
+
+            String response = restTemplate.postForObject(url, entity, String.class);
+            JsonNode root = objectMapper.readTree(response);
+            JsonNode results = root.path("results");
+
+            if (results.isArray()) {
+                for (JsonNode item : results) {
+                    String link = item.path("url").asText("");
+                    String rawContent = item.path("raw_content").asText("");
+
+                    if (StringUtils.hasText(link) && !isBlockedSource(link, query)) {
+                        links.add(link);
+
+                        if (StringUtils.hasText(rawContent)) {
+                            String text = rawContent.replaceAll("\\s+", " ").trim();
+                            if (text.length() > 4000) {
+                                text = text.substring(0, 4000);
+                            }
+                            contents.add(text);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Tavily Search Error: " + e.getMessage());
+        }
+
+        return result;
     }
 
     private boolean isBlockedSource(String link, String query) {
